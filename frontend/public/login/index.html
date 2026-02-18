@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+  <title>Registro de Horas</title>
+</head>
+<body>
+  <main class="container">
+    <form id="loginForm">
+      <h1>Registro de Horas</h1>
+
+      <div id="erroMensagem" style="display: none; background-color: #fff5f5; color: #e53e3e; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: center;"></div>
+
+      <div class="input-group">  
+        <input id="email" placeholder="E-mail" type="email" required>
+        <i class="bx bxs-user"></i>
+      </div>
+
+      <div class="input-group" style="position: relative;">
+        <input id="senha" placeholder="Senha" type="password" required style="padding-right: 80px;">
+        <i class="bx bxs-lock-alt"></i>
+        <button type="button" id="btnMostrarSenha" style="position: absolute; right: 45px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: rgba(255, 255, 255, 0.8); font-size: 18px; padding: 5px; z-index: 2;">
+          <i class="bx bx-show"></i>
+        </button>
+      </div>
+
+      <div class="remember-forgot">
+        <label>
+          <input type="checkbox" id="lembrarSenha">
+          Lembrar senha
+        </label>
+        <a href="#">Esqueci senha</a>
+      </div>
+
+      <button type="submit" class="login" id="btnLogin">Login</button>
+
+      <div class="register-link">
+        <p>Não tem uma conta?</p> <a href="#" id="linkCadastrar">Cadastre-se</a>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    let mostrarSenha = false;
+    const senhaInput = document.getElementById('senha');
+    const btnMostrarSenha = document.getElementById('btnMostrarSenha');
+    const form = document.getElementById('loginForm');
+    const erroMensagem = document.getElementById('erroMensagem');
+    const btnLogin = document.getElementById('btnLogin');
+    const linkCadastrar = document.getElementById('linkCadastrar');
+
+    // Botão mostrar/ocultar senha
+    btnMostrarSenha.addEventListener('click', () => {
+      mostrarSenha = !mostrarSenha;
+      senhaInput.type = mostrarSenha ? 'text' : 'password';
+      btnMostrarSenha.innerHTML = mostrarSenha 
+        ? '<i class="bx bx-hide"></i>' 
+        : '<i class="bx bx-show"></i>';
+    });
+
+    // Hover no botão mostrar senha
+    btnMostrarSenha.addEventListener('mouseenter', () => {
+      btnMostrarSenha.style.color = 'rgba(255, 255, 255, 1)';
+    });
+    btnMostrarSenha.addEventListener('mouseleave', () => {
+      btnMostrarSenha.style.color = 'rgba(255, 255, 255, 0.8)';
+    });
+
+    // Submit do formulário
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      erroMensagem.style.display = 'none';
+      btnLogin.disabled = true;
+      btnLogin.textContent = 'Entrando...';
+
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, senha })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.erro || 'Erro ao fazer login');
+        }
+
+        // Salvar dados do usuário
+        localStorage.setItem('usuarioLogado', JSON.stringify(data.usuario));
+
+        // Enviar mensagem para o parent (App.jsx)
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({
+            type: 'loginSuccess',
+            usuario: data.usuario
+          }, '*');
+        } else {
+          // Se não estiver em iframe, redirecionar diretamente
+          if (data.usuario.perfil === 'colaborador') {
+            window.location.href = '/colaborador/colaborador.html';
+          } else if (data.usuario.perfil === 'lider') {
+            window.location.href = '/lider/lider.html';
+          }
+        }
+      } catch (error) {
+        erroMensagem.textContent = error.message || 'Erro ao fazer login. Tente novamente.';
+        erroMensagem.style.display = 'block';
+        btnLogin.disabled = false;
+        btnLogin.textContent = 'Login';
+      }
+    });
+
+    // Link cadastrar
+    linkCadastrar.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'mostrarFormulario' }, '*');
+      }
+    });
+  </script>
+</body>
+</html>

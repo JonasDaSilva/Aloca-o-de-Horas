@@ -1,0 +1,135 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* fundo somente com a imagem, sem filtro */
+  background: url("/fundo-formulario.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* CONTAINER */
+.container {
+  background-color: #f7f8fa;
+  border-radius: 14px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+/* HEADER */
+.header {
+  background-color:   #e5e5e5;
+  padding: 24px;
+  text-align: center;
+  color: #413b3a;
+}
+
+/* FORM */
+.form {
+  padding: 24px;
+}
+
+/* CAMPOS */
+.form_content {
+  margin-bottom: 16px;
+}
+
+.form_content label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form_content input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 2px solid #dfdfdf;
+  outline: none;
+  transition: 0.2s;
+}
+
+
+
+.form_content input:focus {
+    border-color: #333;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.3);
+}
+
+/* MENSAGEM DE ERRO */
+.form_content small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #777;
+  visibility: hidden ;
+}
+
+/* PERFIL */
+.perfil {
+  border: none;
+  margin: 20px 0;
+}
+
+.perfil legend {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.perfil label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+/* BOTÃO */
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.form_content.success input {
+  border-color: #2ecc71;
+}
+.form_content.success small {
+  color: #2ecc71;
+  visibility: visible;
+}
+
+.form_content.error input {
+  border-color: #e74c3c;
+}
+.form_content.error small {
+  visibility: visible;
+}

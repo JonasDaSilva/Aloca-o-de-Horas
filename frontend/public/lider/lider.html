@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Líder de Empresas</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS próprio -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%);">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-clock me-2"></i>
+          Registro de Horas
+        </a>
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== SIDEBAR ===== -->
+  <div class="offcanvas offcanvas-start sidebar-menu" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarMenuLabel">
+        <i class="fas fa-user-circle me-2"></i>
+        Menu
+      </h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <nav class="nav flex-column">
+        <a class="nav-link active" href="#" data-section="dashboard">
+          <i class="fas fa-tachometer-alt me-2"></i>
+          Dashboard
+        </a>
+        <a class="nav-link" href="#" data-section="usuarios">
+          <i class="fas fa-users me-2"></i>
+          Usuários da Empresa
+        </a>
+        <a class="nav-link" href="#" data-section="projetos">
+          <i class="fas fa-folder-open me-2"></i>
+          Projetos
+        </a>
+        <a class="nav-link" href="#" data-section="perfil">
+          <i class="fas fa-user me-2"></i>
+          Meu Perfil
+        </a>
+        <a class="nav-link" href="#" data-section="notificacoes">
+          <i class="fas fa-bell me-2"></i>
+          Notificações
+          <span class="badge text-white ms-2" id="badgeNotificacoes" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">2</span>
+        </a>
+        <a class="nav-link" href="#" data-section="pesquisar">
+          <i class="fas fa-search me-2"></i>
+          Pesquisar
+        </a>
+        <a class="nav-link" href="#" data-section="configuracoes">
+          <i class="fas fa-cog me-2"></i>
+          Configurações
+        </a>
+        <a class="nav-link" href="#" data-section="suporte">
+          <i class="fas fa-life-ring me-2"></i>
+          Suporte
+        </a>
+        <a class="nav-link" href="#" data-section="sobre">
+          <i class="fas fa-info-circle me-2"></i>
+          Sobre
+        </a>
+        <hr class="my-3">
+        <a class="nav-link text-danger" href="#" id="btnSair">
+          <i class="fas fa-sign-out-alt me-2"></i>
+          Sair
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="main-content">
+    <div class="container-fluid py-4">
+      
+      <!-- Seção: Meu Perfil -->
+      <section id="section-perfil" class="content-section d-none">
+        <div class="card profile-card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-user-circle me-2"></i>
+              Meu Perfil
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 text-center mb-4">
+                <div class="profile-avatar">
+                  <i class="fas fa-user-circle fa-5x" style="color: #27ae60;"></i>
+                </div>
+                <h4 class="mt-3">
+                  <span class="editable-profile" contenteditable="true" id="perfilNome" data-field="nome">Carregando...</span>
+                </h4>
+                <p class="text-muted">
+                  <span class="editable-profile" contenteditable="true" id="perfilCargo" data-field="cargo">Líder de Empresa</span>
+                </p>
+              </div>
+              <div class="col-md-8">
+                <div class="profile-info">
+                  <div class="info-item">
+                    <label><i class="fas fa-envelope me-2"></i>E-mail:</label>
+                    <span class="editable-profile" contenteditable="true" id="perfilEmail" data-field="email">Carregando...</span>
+                  </div>
+                  <div class="info-item">
+                    <label><i class="fas fa-id-badge me-2"></i>ID:</label>
+                    <span id="perfilId">Carregando...</span>
+                  </div>
+                  <div class="info-item">
+                    <label><i class="fas fa-user-tag me-2"></i>Perfil:</label>
+                    <span class="badge text-white" id="perfilTipo" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">Líder</span>
+                  </div>
+                  <div class="info-item">
+                    <label><i class="fas fa-building me-2"></i>Nome da Empresa:</label>
+                    <span class="editable-profile" contenteditable="true" id="perfilEmpresa" data-field="nome_empresa">Digite o nome da empresa...</span>
+                  </div>
+                  <div class="info-item">
+                    <label><i class="fas fa-file-contract me-2"></i>CNPJ:</label>
+                    <span class="editable-profile" contenteditable="true" id="perfilCnpj" data-field="cnpj" placeholder="00.000.000/0000-00">Digite o CNPJ...</span>
+                  </div>
+                  <div class="info-item">
+                    <label><i class="fas fa-briefcase me-2"></i>Sua função:</label>
+                    <span class="editable-profile" contenteditable="true" id="perfilFuncao" data-field="funcao">Digite sua função...</span>
+                  </div>
+                  <div class="mt-3">
+                    <button class="btn text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);" id="btnSalvarPerfil">
+                      <i class="fas fa-save me-2"></i>
+                      Salvar Alterações
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Notificações -->
+      <section id="section-notificacoes" class="content-section d-none">
+        <div class="card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-bell me-2"></i>
+              Notificações
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="notificacao-item" data-notificacao-id="1">
+              <div class="notificacao-icon bg-dark" style="background: #27ae60;">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="notificacao-content">
+                <h5>Pedro Augusto - Nenhuma hora registrada</h5>
+                <p class="text-muted mb-1">O colaborador não registrou horas há 3 dias</p>
+                <small class="text-muted">Há 2 horas</small>
+              </div>
+              <button class="btn btn-sm btn-outline-primary btnVerMensagem" data-notificacao-id="1" data-titulo="Pedro Augusto - Nenhuma hora registrada" data-mensagem="O colaborador não registrou horas há 3 dias" data-data="Há 2 horas" data-tipo="warning" data-fixada="false">Ver Detalhes</button>
+            </div>
+            <div class="notificacao-item" data-notificacao-id="2">
+              <div class="notificacao-icon bg-secondary" style="background: #2ecc71;">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <div class="notificacao-content">
+                <h5>Maria Oliveira - Abaixo do mínimo esperado</h5>
+                <p class="text-muted mb-1">Registrou apenas 120h no período atual</p>
+                <small class="text-muted">Há 5 horas</small>
+              </div>
+              <button class="btn btn-sm btn-outline-primary btnVerMensagem" data-notificacao-id="2" data-titulo="Maria Oliveira - Abaixo do mínimo esperado" data-mensagem="Registrou apenas 120h no período atual" data-data="Há 5 horas" data-tipo="info" data-fixada="false">Ver Detalhes</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Pesquisar -->
+      <section id="section-pesquisar" class="content-section d-none">
+        <div class="card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-search me-2"></i>
+              Pesquisar
+            </h2>
+          </div>
+          <div class="card-body">
+            <form id="formPesquisar" class="mb-4">
+              <div class="input-group input-group-lg">
+                <span class="input-group-text">
+                  <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control" id="inputPesquisar" placeholder="Pesquisar colaboradores, projetos ou horas...">
+                <button class="btn btn-primary" type="submit">Pesquisar</button>
+              </div>
+            </form>
+            <div id="resultadosPesquisa" class="search-results">
+              <p class="text-muted text-center">Digite algo para pesquisar...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Configurações -->
+      <section id="section-configuracoes" class="content-section d-none">
+        <div class="card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-cog me-2"></i>
+              Configurações
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="settings-group">
+              <h5><i class="fas fa-bell me-2"></i>Notificações</h5>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="notifEmail" checked>
+                <label class="form-check-label" for="notifEmail">Receber notificações por e-mail</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="notifPush" checked>
+                <label class="form-check-label" for="notifPush">Notificações push</label>
+              </div>
+            </div>
+            <hr>
+            <div class="settings-group">
+              <h5><i class="fas fa-palette me-2"></i>Aparência</h5>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tema" id="temaClaro" checked>
+                <label class="form-check-label" for="temaClaro">Claro</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tema" id="temaEscuro">
+                <label class="form-check-label" for="temaEscuro">Escuro</label>
+              </div>
+            </div>
+            <hr>
+            <div class="settings-group">
+              <h5><i class="fas fa-shield-alt me-2"></i>Segurança</h5>
+              <div class="mb-3">
+                <button class="btn btn-outline-primary mb-2" id="btnAlterarEmail">
+                  <i class="fas fa-envelope me-2"></i>
+                  Alterar E-mail
+                </button>
+              </div>
+              <div class="mb-3">
+                <button class="btn btn-outline-primary mb-2" id="btnAlterarCelular">
+                  <i class="fas fa-phone me-2"></i>
+                  Alterar Número de Celular
+                </button>
+              </div>
+              <div class="mb-3">
+                <button class="btn btn-outline-primary" id="btnAlterarSenha">
+                  <i class="fas fa-key me-2"></i>
+                  Alterar Senha
+                </button>
+              </div>
+            </div>
+            <hr>
+            <div class="settings-group">
+              <h5><i class="fas fa-lock me-2"></i>Verificação em Duas Etapas</h5>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="verificacaoDuasEtapas">
+                <label class="form-check-label" for="verificacaoDuasEtapas">Ativar verificação em duas etapas (2FA)</label>
+              </div>
+              <small class="text-muted d-block mt-2">Adicione uma camada extra de segurança à sua conta</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Suporte -->
+      <section id="section-suporte" class="content-section d-none">
+        <div class="card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-life-ring me-2"></i>
+              Suporte
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body text-center">
+                    <i class="fas fa-envelope fa-3x mb-3" style="color: #27ae60;"></i>
+                    <h5>Contato por E-mail</h5>
+                    <p class="text-muted">Envie suas dúvidas ou problemas por e-mail</p>
+                    <a href="mailto:suporte@registrodehoras.com" class="btn btn-outline-success">
+                      <i class="fas fa-envelope me-2"></i>
+                      Enviar E-mail
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body text-center">
+                    <i class="fas fa-comments fa-3x mb-3" style="color: #27ae60;"></i>
+                    <h5>Chat de Suporte</h5>
+                    <p class="text-muted">Converse com nossa equipe em tempo real</p>
+                    <button class="btn btn-outline-success" id="btnAbrirChat">
+                      <i class="fas fa-comments me-2"></i>
+                      Iniciar Chat
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body text-center">
+                    <i class="fas fa-book fa-3x mb-3" style="color: #27ae60;"></i>
+                    <h5>Central de Ajuda</h5>
+                    <p class="text-muted">Acesse nossa base de conhecimento</p>
+                    <button class="btn btn-outline-success" id="btnCentralAjuda">
+                      <i class="fas fa-book me-2"></i>
+                      Acessar Central
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-body text-center">
+                    <i class="fas fa-phone fa-3x mb-3" style="color: #27ae60;"></i>
+                    <h5>Telefone</h5>
+                    <p class="text-muted">Ligue para nosso suporte</p>
+                    <a href="tel:+5511999999999" class="btn btn-outline-success">
+                      <i class="fas fa-phone me-2"></i>
+                      (11) 99999-9999
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="mt-4">
+              <h5><i class="fas fa-question-circle me-2"></i>Perguntas Frequentes</h5>
+              <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                      Como gerencio os colaboradores da minha empresa?
+                    </button>
+                  </h2>
+                  <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      Na seção "Usuários da Empresa", você pode adicionar novos colaboradores, editar informações existentes e atribuir projetos. Use o botão "Adicionar Usuário" para criar novas contas.
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                      Como atribuo projetos aos colaboradores?
+                    </button>
+                  </h2>
+                  <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      Na seção "Projetos", crie ou edite um projeto e use a opção "Atribuir Colaboradores" para vincular membros da equipe aos projetos desejados.
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                      Como visualizo relatórios de horas trabalhadas?
+                    </button>
+                  </h2>
+                  <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                      No Dashboard, você encontrará um resumo completo das horas trabalhadas por colaborador e por projeto. Use a seção "Pesquisar" para filtros mais específicos.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Sobre -->
+      <section id="section-sobre" class="content-section d-none">
+        <div class="card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-info-circle me-2"></i>
+              Sobre o Sistema
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="mb-4">
+              <h3 class="mb-3">
+                <i class="fas fa-clock me-2" style="color: #27ae60;"></i>
+                Sistema de Alocação de Horas
+              </h3>
+              <div class="sobre-content">
+                <p class="lead">
+                  O Sistema de Alocação de Horas é uma plataforma desenvolvida para facilitar o registro, controle e gestão do tempo trabalhado por colaboradores em projetos e atividades empresariais.
+                </p>
+                
+                <h4 class="mt-4 mb-3">Objetivo</h4>
+                <p>
+                  O principal objetivo deste sistema é proporcionar uma forma eficiente e precisa de registrar e acompanhar as horas trabalhadas pelos colaboradores, permitindo uma gestão adequada do tempo dedicado a diferentes projetos e atividades dentro da organização.
+                </p>
+                
+                <h4 class="mt-4 mb-3">Importância da Alocação de Horas</h4>
+                <div class="row mt-3">
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5><i class="fas fa-chart-line me-2" style="color: #27ae60;"></i>Controle e Planejamento</h5>
+                        <p class="text-muted">Permite um controle preciso do tempo investido em cada projeto, facilitando o planejamento futuro e a alocação adequada de recursos.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5><i class="fas fa-dollar-sign me-2" style="color: #27ae60;"></i>Gestão Financeira</h5>
+                        <p class="text-muted">Auxilia na precificação de projetos, cálculo de custos e análise de rentabilidade, essencial para a saúde financeira da empresa.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5><i class="fas fa-users me-2" style="color: #27ae60;"></i>Transparência</h5>
+                        <p class="text-muted">Proporciona transparência entre colaboradores e gestores, permitindo que todos tenham visibilidade sobre o trabalho realizado.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5><i class="fas fa-balance-scale me-2" style="color: #27ae60;"></i>Conformidade Legal</h5>
+                        <p class="text-muted">Garante o cumprimento das normas trabalhistas relacionadas ao registro de ponto e controle de jornada de trabalho.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5><i class="fas fa-tasks me-2" style="color: #27ae60;"></i>Produtividade</h5>
+                        <p class="text-muted">Ajuda a identificar gargalos, otimizar processos e melhorar a produtividade da equipe através da análise de dados.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5><i class="fas fa-handshake me-2" style="color: #27ae60;"></i>Tomada de Decisão</h5>
+                        <p class="text-muted">Fornece dados concretos para tomadas de decisão estratégicas, baseadas em informações reais sobre o uso do tempo.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <h4 class="mt-4 mb-3">Como Funciona</h4>
+                <p>
+                  O sistema permite que colaboradores registrem suas horas trabalhadas diariamente, incluindo entrada, saída para almoço, retorno do almoço e saída final. Essas informações são automaticamente calculadas e armazenadas, gerando relatórios e análises que auxiliam na gestão do tempo e dos projetos.
+                </p>
+                <p>
+                  Os líderes têm acesso a uma visão consolidada de todos os colaboradores, podendo acompanhar projetos, alocar recursos e tomar decisões baseadas em dados precisos sobre a utilização do tempo.
+                </p>
+                
+                <div class="alert alert-success mt-4">
+                  <i class="fas fa-info-circle me-2"></i>
+                  <strong>Importante:</strong> O registro preciso das horas trabalhadas é fundamental para o sucesso do sistema e para a gestão eficiente dos recursos da empresa.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Usuários da Empresa -->
+      <section id="section-usuarios" class="content-section d-none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="mb-0">
+            <i class="fas fa-users me-2"></i>
+            Usuários da Empresa
+          </h1>
+          <button class="btn text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);" data-bs-toggle="modal" data-bs-target="#modalAdicionarUsuario">
+            <i class="fas fa-user-plus me-2"></i>
+            Adicionar Usuário
+          </button>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+            <h3 class="mb-0">
+              <i class="fas fa-users me-2"></i>
+              Lista de Colaboradores
+            </h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th><i class="fas fa-id-badge me-2"></i>ID</th>
+                    <th><i class="fas fa-user me-2"></i>Nome</th>
+                    <th><i class="fas fa-envelope me-2"></i>E-mail</th>
+                    <th><i class="fas fa-briefcase me-2"></i>Função</th>
+                    <th><i class="fas fa-user-tag me-2"></i>Perfil</th>
+                    <th><i class="fas fa-clock me-2"></i>Total de Horas</th>
+                    <th><i class="fas fa-info-circle me-2"></i>Status</th>
+                    <th><i class="fas fa-cog me-2"></i>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="usuariosTableBody">
+                  <tr>
+                    <td colspan="7" class="text-center text-muted">
+                      Carregando usuários...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Projetos -->
+      <section id="section-projetos" class="content-section d-none">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="mb-0">
+            <i class="fas fa-folder-open me-2"></i>
+            Projetos da Empresa
+          </h1>
+          <button class="btn text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);" id="btnAdicionarProjeto">
+            <i class="fas fa-plus me-2"></i>
+            Adicionar Projeto
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+            <h3 class="mb-0">Projetos Ativos</h3>
+          </div>
+          <div class="card-body">
+            <div class="project-grid" id="projetosGrid">
+              <!-- Projetos serão carregados aqui via JavaScript -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Dashboard (Padrão) -->
+      <section id="section-dashboard" class="content-section">
+        <h1 class="mb-4">
+          <i class="fas fa-tachometer-alt me-2"></i>
+          Dashboard
+        </h1>
+
+        <!-- Cards de Resumo -->
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="stat-card bg-primary">
+              <div class="stat-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="totalColaboradores">4</h3>
+                <p>Colaboradores</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stat-card bg-warning">
+              <div class="stat-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="totalPendencias">2</h3>
+                <p>Pendências</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stat-card bg-success">
+              <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="totalOk">2</h3>
+                <p>Em Dia</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stat-card bg-info">
+              <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="stat-content">
+                <h3 id="totalHoras">430h</h3>
+                <p>Total de Horas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pendências -->
+        <div class="card mb-4">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #1e8449 0%, #27ae60 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              Pendências
+              <span class="badge bg-light text-dark ms-2">2</span>
+            </h2>
+          </div>
+          <div class="card-body">
+            <p class="text-muted mb-3">Os colaboradores abaixo não registraram horas no período atual.</p>
+            <ul class="pendencias-lista">
+              <li class="leve">
+                <i class="fas fa-user me-2"></i>
+                Maria Oliveira - Abaixo do mínimo esperado
+              </li>
+              <li class="grave">
+                <i class="fas fa-user me-2"></i>
+                Pedro Augusto - Nenhuma hora registrada
+                <span class="tempo">(há 3 dias)</span>
+                <button class="btn btn-sm btn-danger ms-2">
+                  <i class="fas fa-bell me-1"></i>
+                  Notificar
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Colaboradores -->
+        <div class="card mb-4">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-users me-2"></i>
+              Colaboradores da Empresa
+              <span class="badge bg-light text-dark ms-2">4</span>
+            </h2>
+          </div>
+          <div class="card-body">
+            <form class="colab-filtros mb-4">
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label">De</label>
+                  <input type="date" class="form-control">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Até</label>
+                  <input type="date" class="form-control">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Projeto</label>
+                  <select class="form-select">
+                    <option>Todos</option>
+                    <option>Sistema Interno</option>
+                    <option>Site</option>
+                  </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                  <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-1"></i>
+                    Buscar
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div class="colaboradores-lista">
+              <div class="colab-linha">
+                <div class="colab-card">
+                  <div class="colab-info">
+                    <span class="nome">João Silva</span>
+                    <span class="cargo">Desenvolvedor</span>
+                  </div>
+                </div>
+              </div>
+              <div class="colab-linha">
+                <div class="colab-card">
+                  <div class="colab-info">
+                    <span class="nome">Maria Oliveira</span>
+                    <span class="cargo">Analista</span>
+                  </div>
+                </div>
+              </div>
+              <div class="colab-linha">
+                <div class="colab-card">
+                  <div class="colab-info">
+                    <span class="nome">Carlos Souza</span>
+                    <span class="cargo">Designer</span>
+                  </div>
+                </div>
+              </div>
+              <div class="colab-linha">
+                <div class="colab-card">
+                  <div class="colab-info">
+                    <span class="nome">Pedro Augusto</span>
+                    <span class="cargo">Estagiário</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabela de Resumo -->
+        <div class="card">
+          <div class="card-header text-white" style="background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);">
+            <h2 class="mb-0">
+              <i class="fas fa-table me-2"></i>
+              Resumo de Horas
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th><i class="fas fa-user me-2"></i>Nome</th>
+                    <th><i class="fas fa-clock me-2"></i>Total de Horas</th>
+                    <th><i class="fas fa-info-circle me-2"></i>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>João Silva</td>
+                    <td>160h</td>
+                    <td><span class="badge text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">OK</span></td>
+                  </tr>
+                  <tr>
+                    <td>Maria Oliveira</td>
+                    <td>120h</td>
+                    <td><span class="badge bg-secondary">Pendente</span></td>
+                  </tr>
+                  <tr>
+                    <td>Carlos Souza</td>
+                    <td>150h</td>
+                    <td><span class="badge text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">OK</span></td>
+                  </tr>
+                  <tr>
+                    <td>Pedro Augusto</td>
+                    <td>00h</td>
+                    <td><span class="badge text-white" style="background: linear-gradient(135deg, #1e8449 0%, #196f3d 100%);">Grave</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal: Adicionar Usuário -->
+  <div class="modal fade" id="modalAdicionarUsuario" tabindex="-1" aria-labelledby="modalAdicionarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalAdicionarUsuarioLabel">
+            <i class="fas fa-user-plus me-2"></i>
+            Adicionar Novo Usuário
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAdicionarUsuario">
+            <div class="mb-3">
+              <label for="novoUsuarioNome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="novoUsuarioNome" required>
+            </div>
+            <div class="mb-3">
+              <label for="novoUsuarioEmail" class="form-label">E-mail</label>
+              <input type="email" class="form-control" id="novoUsuarioEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="novoUsuarioSenha" class="form-label">Senha</label>
+              <input type="password" class="form-control" id="novoUsuarioSenha" required>
+            </div>
+            <div class="mb-3">
+              <label for="novoUsuarioFuncao" class="form-label">Função</label>
+              <select class="form-select" id="novoUsuarioFuncao" required>
+                <option value="">Selecione...</option>
+                <option value="TI">TI</option>
+                <option value="RH">RH</option>
+                <option value="Analista">Analista</option>
+                <option value="Gerente">Gerente</option>
+                <option value="Desenvolvedor">Desenvolvedor</option>
+                <option value="Designer">Designer</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="novoUsuarioPerfil" class="form-label">Perfil</label>
+              <select class="form-select" id="novoUsuarioPerfil" required>
+                <option value="">Selecione...</option>
+                <option value="colaborador">Colaborador</option>
+                <option value="lider">Líder</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);" id="btnSalvarUsuario">
+            <i class="fas fa-save me-2"></i>
+            Salvar Usuário
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Editar Usuário -->
+  <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalEditarUsuarioLabel">
+            <i class="fas fa-user-edit me-2"></i>
+            Editar Colaborador
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEditarUsuario">
+            <input type="hidden" id="editarUsuarioId">
+            <div class="mb-3">
+              <label class="form-label">Nome</label>
+              <input type="text" class="form-control" id="editarUsuarioNome" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">E-mail</label>
+              <input type="email" class="form-control" id="editarUsuarioEmail" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="editarUsuarioFuncao" class="form-label">
+                <i class="fas fa-briefcase me-2"></i>Função do Colaborador
+              </label>
+              <select class="form-select" id="editarUsuarioFuncao" required>
+                <option value="">Selecione uma função...</option>
+                <option value="TI">TI</option>
+                <option value="RH">RH</option>
+                <option value="Analista">Analista</option>
+                <option value="Gerente">Gerente</option>
+                <option value="Desenvolvedor">Desenvolvedor</option>
+                <option value="Designer">Designer</option>
+                <option value="Estagiário">Estagiário</option>
+                <option value="Coordenador">Coordenador</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Outro">Outro</option>
+              </select>
+              <small class="form-text text-muted">Selecione a função que deseja atribuir ao colaborador</small>
+            </div>
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="editarUsuarioNotificar">
+                <label class="form-check-label" for="editarUsuarioNotificar">
+                  <i class="fas fa-bell me-1"></i> Notificar o colaborador sobre a alteração
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);" id="btnSalvarEdicaoUsuario">
+            <i class="fas fa-save me-2"></i>
+            Salvar Alterações
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Detalhes do Usuário -->
+  <div class="modal fade" id="modalDetalhesUsuario" tabindex="-1" aria-labelledby="modalDetalhesUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalDetalhesUsuarioLabel">
+            <i class="fas fa-user me-2"></i>
+            Detalhes do Colaborador
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4 text-center mb-4">
+              <div class="profile-avatar-container mb-3">
+                <div class="profile-avatar d-inline-block" id="detalhesAvatarContainer">
+                  <img id="detalhesAvatarImg" src="" alt="Foto de Perfil" style="display: none; width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid #27ae60; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                  <i class="fas fa-user-circle fa-5x" id="detalhesAvatarIcon" style="color: #27ae60; display: block;"></i>
+                </div>
+              </div>
+              <h4 class="mt-3 mb-2" id="detalhesNome">Carregando...</h4>
+              <p class="text-muted mb-2" id="detalhesFuncao">
+                <i class="fas fa-briefcase me-1"></i>-</p>
+              <span class="badge text-white mb-3" id="detalhesPerfil" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); padding: 8px 16px; font-size: 0.9rem;">Colaborador</span>
+            </div>
+            <div class="col-md-8">
+              <div class="profile-info">
+                <div class="info-item mb-3">
+                  <label><i class="fas fa-id-badge me-2"></i>ID:</label>
+                  <span id="detalhesId">-</span>
+                </div>
+                <div class="info-item mb-3">
+                  <label><i class="fas fa-envelope me-2"></i>E-mail:</label>
+                  <span id="detalhesEmail">-</span>
+                </div>
+                <div class="info-item mb-3">
+                  <label><i class="fas fa-briefcase me-2"></i>Função:</label>
+                  <span id="detalhesFuncaoTexto">-</span>
+                </div>
+                <div class="info-item mb-3">
+                  <label><i class="fas fa-building me-2"></i>Empresa:</label>
+                  <span id="detalhesEmpresa">-</span>
+                </div>
+                <div class="info-item mb-3">
+                  <label><i class="fas fa-clock me-2"></i>Total de Horas:</label>
+                  <span id="detalhesTotalHoras">-</span>
+                </div>
+                <div class="info-item mb-3">
+                  <label><i class="fas fa-calendar-alt me-2"></i>Data de Cadastro:</label>
+                  <span id="detalhesDataCadastro">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="mt-4">
+            <h5 class="mb-3">
+              <i class="fas fa-comments me-2" style="color: #27ae60;"></i>
+              Enviar Mensagem ao Colaborador
+            </h5>
+            <div class="alert alert-info mb-3">
+              <i class="fas fa-info-circle me-2"></i>
+              Envie uma mensagem diretamente para este colaborador. Ele receberá uma notificação.
+            </div>
+            <form id="formEnviarMensagem">
+              <input type="hidden" id="mensagemDestinatarioId">
+              <div class="mb-3">
+                <label for="mensagemTitulo" class="form-label">
+                  <i class="fas fa-heading me-1"></i>Título da Mensagem
+                </label>
+                <input type="text" class="form-control" id="mensagemTitulo" placeholder="Ex: Aviso importante sobre projeto" required>
+              </div>
+              <div class="mb-3">
+                <label for="mensagemTexto" class="form-label">
+                  <i class="fas fa-envelope-open-text me-1"></i>Mensagem
+                </label>
+                <textarea class="form-control" id="mensagemTexto" rows="4" placeholder="Digite sua mensagem aqui..." required></textarea>
+                <small class="form-text text-muted">A mensagem será enviada como notificação ao colaborador</small>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <i class="fas fa-times me-2"></i>Fechar
+                </button>
+                <button type="button" class="btn text-white" id="btnEnviarMensagemColaborador" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+                  <i class="fas fa-paper-plane me-2"></i>
+                  Enviar Mensagem
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Adicionar/Editar Projeto -->
+  <div class="modal fade" id="modalProjeto" tabindex="-1" aria-labelledby="modalProjetoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalProjetoLabel">
+            <i class="fas fa-folder-open me-2"></i>
+            Novo Projeto
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formProjeto">
+            <input type="hidden" id="projetoId">
+            <div class="mb-3">
+              <label for="projetoNome" class="form-label">Nome do Projeto *</label>
+              <input type="text" class="form-control" id="projetoNome" placeholder="Ex: Hospital Santa Casa" required>
+            </div>
+            <div class="mb-3">
+              <label for="projetoCodigo" class="form-label">Código</label>
+              <input type="text" class="form-control" id="projetoCodigo" placeholder="Ex: HSC-2024">
+            </div>
+            <div class="mb-3">
+              <label for="projetoDataInicio" class="form-label">Data de Início</label>
+              <input type="date" class="form-control" id="projetoDataInicio">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Colaboradores *</label>
+              <div id="colaboradoresCheckboxContainer" style="max-height: 200px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; padding: 1rem;">
+                <p class="text-muted text-center">Carregando colaboradores...</p>
+              </div>
+              <small class="form-text text-muted">Selecione os colaboradores que participarão deste projeto</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);" id="btnSalvarProjeto">
+            <i class="fas fa-save me-2"></i>
+            Salvar Projeto
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Visualizar Mensagem -->
+  <div class="modal fade" id="modalVerMensagem" tabindex="-1" aria-labelledby="modalVerMensagemLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);">
+          <h5 class="modal-title" id="modalVerMensagemLabel">
+            <i class="fas fa-envelope me-2"></i>
+            Mensagem
+            <span class="badge bg-light text-dark ms-2" id="badgeFixada" style="display: none;">
+              <i class="fas fa-thumbtack me-1"></i>Fixada
+            </span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mensagem-header mb-3">
+            <div class="d-flex align-items-center mb-2">
+              <div class="notificacao-icon bg-dark me-3" id="modalIcon" style="background: #27ae60;">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div>
+                <h5 class="mb-0" id="modalTitulo">Título da Mensagem</h5>
+                <small class="text-muted" id="modalData">Há 2 horas</small>
+              </div>
+            </div>
+          </div>
+          <div class="mensagem-conteudo mb-4">
+            <p id="modalMensagem" class="text-muted">Conteúdo da mensagem...</p>
+          </div>
+          
+          <!-- Área de Resposta -->
+          <div class="resposta-area mb-3" id="areaResposta" style="display: none;">
+            <label class="form-label"><strong>Responder:</strong></label>
+            <textarea class="form-control" id="textoResposta" rows="4" placeholder="Digite sua resposta..."></textarea>
+            <div class="d-flex justify-content-end mt-2">
+              <button type="button" class="btn btn-sm btn-secondary me-2" id="btnCancelarResposta">
+                Cancelar
+              </button>
+              <button type="button" class="btn btn-sm text-white" id="btnEnviarResposta" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+                <i class="fas fa-paper-plane me-1"></i>Enviar Resposta
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex justify-content-between w-100">
+            <div>
+              <button type="button" class="btn btn-outline-primary" id="btnResponder">
+                <i class="fas fa-reply me-1"></i>Responder
+              </button>
+            </div>
+            <div>
+              <button type="button" class="btn btn-outline-warning me-2" id="btnArquivar">
+                <i class="fas fa-archive me-1"></i>Arquivar
+              </button>
+              <button type="button" class="btn btn-outline-danger me-2" id="btnLixeira">
+                <i class="fas fa-trash me-1"></i>Lixeira
+              </button>
+              <button type="button" class="btn btn-outline-info" id="btnFixar">
+                <i class="fas fa-thumbtack me-1"></i>Fixar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Ver Colaboradores do Projeto -->
+  <div class="modal fade" id="modalColaboradoresProjeto" tabindex="-1" aria-labelledby="modalColaboradoresProjetoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalColaboradoresProjetoLabel">
+            <i class="fas fa-users me-2"></i>
+            Colaboradores - <span id="nomeProjetoModal"></span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="colaboradoresProjetoLista" class="list-group">
+            <!-- Colaboradores serão carregados aqui -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Gerenciar Projetos do Colaborador -->
+  <div class="modal fade" id="modalProjetosColaborador" tabindex="-1" aria-labelledby="modalProjetosColaboradorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalProjetosColaboradorLabel">
+            <i class="fas fa-folder-open me-2"></i>
+            Gerenciar Projetos - <span id="nomeColaboradorModal"></span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Adicionar Projeto:</label>
+            <select class="form-select" id="selectProjetoParaAdicionar">
+              <option value="">Selecione um projeto...</option>
+            </select>
+            <button class="btn btn-sm text-white mt-2" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);" id="btnAdicionarProjetoColaborador">
+              <i class="fas fa-plus me-1"></i>
+              Adicionar Projeto
+            </button>
+          </div>
+          <hr>
+          <h6>Projetos Atribuídos:</h6>
+          <div id="projetosColaboradorLista" class="list-group">
+            <!-- Projetos serão carregados aqui -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Alterar E-mail -->
+  <div class="modal fade" id="modalAlterarEmail" tabindex="-1" aria-labelledby="modalAlterarEmailLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalAlterarEmailLabel">
+            <i class="fas fa-envelope me-2"></i>
+            Alterar E-mail
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAlterarEmail">
+            <div class="mb-3">
+              <label for="novoEmail" class="form-label">Novo E-mail</label>
+              <input type="email" class="form-control" id="novoEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="confirmarEmail" class="form-label">Confirmar Novo E-mail</label>
+              <input type="email" class="form-control" id="confirmarEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="senhaAtualEmail" class="form-label">Senha Atual</label>
+              <input type="password" class="form-control" id="senhaAtualEmail" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success text-white" id="btnSalvarEmail">
+            <i class="fas fa-save me-2"></i>Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Alterar Celular -->
+  <div class="modal fade" id="modalAlterarCelular" tabindex="-1" aria-labelledby="modalAlterarCelularLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalAlterarCelularLabel">
+            <i class="fas fa-phone me-2"></i>
+            Alterar Número de Celular
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAlterarCelular">
+            <div class="mb-3">
+              <label for="novoCelular" class="form-label">Novo Número de Celular</label>
+              <input type="tel" class="form-control" id="novoCelular" placeholder="(11) 99999-9999" required>
+              <small class="text-muted">Formato: (XX) XXXXX-XXXX</small>
+            </div>
+            <div class="mb-3">
+              <label for="senhaAtualCelular" class="form-label">Senha Atual</label>
+              <input type="password" class="form-control" id="senhaAtualCelular" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success text-white" id="btnSalvarCelular">
+            <i class="fas fa-save me-2"></i>Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Alterar Senha -->
+  <div class="modal fade" id="modalAlterarSenha" tabindex="-1" aria-labelledby="modalAlterarSenhaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+          <h5 class="modal-title" id="modalAlterarSenhaLabel">
+            <i class="fas fa-key me-2"></i>
+            Alterar Senha
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAlterarSenha">
+            <div class="mb-3">
+              <label for="senhaAtual" class="form-label">Senha Atual</label>
+              <input type="password" class="form-control" id="senhaAtual" required>
+            </div>
+            <div class="mb-3">
+              <label for="novaSenha" class="form-label">Nova Senha</label>
+              <input type="password" class="form-control" id="novaSenha" required>
+              <small class="text-muted">Mínimo de 6 caracteres</small>
+            </div>
+            <div class="mb-3">
+              <label for="confirmarSenha" class="form-label">Confirmar Nova Senha</label>
+              <input type="password" class="form-control" id="confirmarSenha" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success text-white" id="btnSalvarSenha">
+            <i class="fas fa-save me-2"></i>Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Script próprio -->
+  <script src="script.js"></script>
+</body>
+</html>

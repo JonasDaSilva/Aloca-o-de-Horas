@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+/* mantém o background, agora funcionando corretamente */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  background-image: url("/transferir.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* mantém o main para layout */
+main {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SEU container, só corrigindo sintaxe */
+.container {
+  width: 420px;
+  background-color: transparent;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  color: rgb(255, 255, 255);
+  padding: 30px 40px;
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+  backdrop-filter: blur(120px);
+}
+.container{
+  font-size: 20px;
+  text-align: center;
+
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+
+}
+
+.input-group input { 
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 40px;
+  outline: none;
+  font-size: 16px;
+  color: aliceblue;
+  padding: 20px 45px 20px 20px;
+
+}
+
+.input-group input::placeholder{
+  color:rgb(255, 255, 255) ;
+
+}
+
+.input-group i {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  font-size: 20px;
+  transform: translateY(-50%);
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0 15px;
+
+}
+
+/* 1 valor - margin: 20px - todos os lados
+   2 valores - margin: 20px 30px - Em cima e embaixo, dos lados
+   3 valores - margin: 20px 10px 30px - Em cima, dos lados, embaixo
+   4 valores - margin: 10px 30px 12px 33px - Em cima, direita, embaixo, esquerda */
+
+
+ .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0 15px;
+ }
+
+ .remember-forgot .remember-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 8px;
+  position: relative;
+ }
+
+ .remember-forgot .remember-label:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(2px);
+ }
+
+ .remember-forgot .remember-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+ }
+
+ .remember-forgot .remember-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+ }
+
+ .remember-forgot .custom-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: transparent;
+  position: relative;
+  flex-shrink: 0;
+ }
+
+ .remember-forgot .remember-label:hover .custom-checkbox {
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+ }
+
+ .remember-forgot .remember-checkbox:checked ~ .remember-text .custom-checkbox {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+ }
+
+ .remember-forgot .custom-checkbox i {
+  font-size: 14px;
+  color: #fff;
+  font-weight: bold;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+ }
+
+ .remember-forgot .remember-checkbox:checked ~ .remember-text .custom-checkbox i {
+  opacity: 1;
+  transform: scale(1);
+ }
+
+ .remember-forgot .remember-checkbox:checked ~ .remember-text {
+  font-weight: 600;
+ }
+
+ .remember-forgot a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 8px;
+ }
+
+ .remember-forgot a:hover {
+  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.1);
+ }
+
+ .login {
+
+  width: 100%;
+  height: 50%;
+  background-color: #fff;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  margin-top: 40px;
+  padding: 18px 0;
+
+ }
+ 
+ .login:hover {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transition: 0.3s;
+  
+}
+
+.register-link {
+
+  font-size: 14px;
+  text-align: center;
+  margin: 20px 0 15px;
+
+}
+
+.register-link a {
+
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+  
+}
+  

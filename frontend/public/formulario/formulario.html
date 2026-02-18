@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <title>Cadastro</title>
+</head>
+
+<body>
+  <div class="container">
+    <section class="header">
+      <h2>Nova conta</h2>
+    </section>
+
+    <form id="form" class="form">
+
+      <div class="form_content">
+        <label for="fullname">Nome Completo</label>
+        <input type="text" id="fullname" placeholder="Digite seu nome completo">
+        <small>Mensagem de erro</small>
+      </div>
+
+      <div class="form_content">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="Digite o seu email">
+        <small>Mensagem de erro</small>
+      </div>
+
+      <div class="form_content">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="Digite a sua senha"
+        required
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        title="A senha deve ter n mínimo 8 caracteres, com letra maiúscula, minúsculas e números">
+        <small>Mínimo 8 caracteres, com letras maiúsculas, minúsculas e números</small>
+      
+      </div>
+
+      <div class="form_content">
+        <label for="password-confirmation">Confirmação de senha</label>
+        <input type="password" id="password-confirmation" placeholder="Digite a senha novamente">
+        <small>Mensagem de erro</small>
+      </div>
+
+      <div class="form_content">
+        <label class="terms-label" for="terms">
+          Aceito os termos de uso e a política de privacidade
+          <input type="checkbox" id="terms" required>
+        </label>
+      </div>
+
+      <fieldset class="perfil">
+        <legend>Você é:</legend>
+
+        <label>
+          <input type="radio" name="perfil" value="colaborador" required>
+          Colaborador
+        </label>
+
+        <label>
+          <input type="radio" name="perfil" value="lider">
+          Líder de empresa
+        </label>
+      </fieldset>
+
+      <button type="submit">Cadastrar</button>
+    </form>
+  </div>
+</body>
+</html>

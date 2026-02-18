@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+  <title>Colaborador</title>
+
+    </head>   
+   
+      
+
+
+ <body>
+  <header>
+      <nav>
+        <ul>
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Atividades</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Ajustes</a></li>
+        </ul>
+      </nav>
+   
+  </header>
+
+    <div class="container">  <br>
+      <h1>Registro de Horas</h1> <br>
+      <div class="colaborador">
+          <strong>Colaborador:</strong> Jonas da Silva Paz
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Entrada</th>
+            <th>Saida Almoço</th>
+            <th>Retorno Almoço</th>
+            <th>Saida Final</th>
+            <th>Total do Dia</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><input type="time" class="entrada" disabled></td> 
+            <td><input type="time" class="almoco-saida" disabled></td> 
+            <td><input type="time" class="almoco-volta" disabled></td> 
+            <td><input type="time" class="saida" disabled></td> 
+            <td class="total">00:00</td>
+          </tr>
+        </tbody>
+      </table>
+
+        <h2 class="section-title">Projetos</h2>
+
+        <div class="project-grid">
+        
+          <label for="toogleproject" class="project-card add-card">
+            <span class="plus">+</span>
+            <span>Adicionar projeto</span>
+          </label>
+
+          <input type="checkbox" id="toogleproject" class="toogleproject">
+        
+    
+          <div class="project-card">
+              <h3>Projeto:
+                <span class="editable-title" contenteditable="true"></span>
+              </h3>
+              <p>
+                <strong>Código:</strong>
+                 <span class="editable-text" contenteditable="true"></span>
+                </p>
+
+              <p>
+                <strong>Inicio:</strong>
+                <span class="data-projeto"></span> 
+                 </p>
+          </div>
+          
+        </div>
+
+              <h2 class="section-title">Outras Atividades</h2>
+
+        <div class="ativ-grid"> 
+        
+          <label for="toogleeativ" class="ativ-card add-card">
+            <span class="plus">+</span>
+            <span>Adicionar atividades</span>
+          </label>
+
+          <input type="checkbox" id="toogleeativ" class="toogleeativ">
+        
+    
+          <div class="ativ-card atividade">
+             
+              <h3>Reunião:
+              </h3>
+              <p>
+                <strong>Data:</strong>
+                <span class="data-reuniao" >--/--/----</span>
+              </p>
+              
+
+          </div>
+
+            <div class="ativ-card atividade">
+
+               <h3>Atestado:
+              <span class="data-atividade" >--/--/----</span>
+              </h3>
+
+              
+              
+          </div>
+
+          <div class="ativ-card atividade">
+
+            <h3>Eventos:
+              <span class="data-atividade" >--/--/----</span>
+              </h3>
+               
+          </div>
+              
+        </div>
+
+          <button type="button" class="btn btn-success fechar-dia"
+          > Fechar Dia </button>
+       
+
+       <script>
+/* =========================
+   FUNÇÃO: retorna data de hoje (BR)
+   ========================= */
+function dataHojeBR() {
+  const hoje = new Date();
+  const dia = String(hoje.getDate()).padStart(2, "0");
+  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+  const ano = hoje.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
+/* =========================
+   FUNÇÃO: retorna hora atual
+   ========================= */
+function horaAgora() {
+  const agora = new Date();
+  return agora.toTimeString().slice(0, 5);
+}
+
+/* =========================
+   FUNÇÃO: converte HH:MM em minutos
+   ========================= */
+function paraMinutos(hora) {
+  const [h, m] = hora.split(":").map(Number);
+  return h * 60 + m;
+}
+
+/* =========================
+   FUNÇÃO: calcula total do dia
+   ========================= */
+function calcularTotalLinha(linha) {
+  const entrada = linha.querySelector(".entrada");
+  const almocoSaida = linha.querySelector(".almoco-saida");
+  const almocoVolta = linha.querySelector(".almoco-volta");
+  const saida = linha.querySelector(".saida");
+  const totalEl = linha.querySelector(".total");
+
+  if (!entrada.value || !almocoSaida.value || !almocoVolta.value || !saida.value) {
+    totalEl.textContent = "00:00";
+    return;
+  }
+
+  const total =
+    (paraMinutos(saida.value) - paraMinutos(entrada.value)) -
+    (paraMinutos(almocoVolta.value) - paraMinutos(almocoSaida.value));
+
+  if (total < 0) {
+    totalEl.textContent = "Erro";
+    return;
+  }
+
+  const horas = Math.floor(total / 60);
+  const minutos = total % 60;
+
+  totalEl.textContent =
+    `${String(horas).padStart(2, "0")}:${String(minutos).padStart(2, "0")}`;
+}
+
+/* =========================
+   AO CARREGAR A PÁGINA
+   ========================= */
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* Hora de entrada automática */
+  const entrada = document.querySelector(".entrada");
+  entrada.value = horaAgora();
+  entrada.disabled = true;
+
+  /* Datas fixas */
+  const hoje = dataHojeBR();
+
+  document.querySelectorAll(".data-projeto").forEach(el => {
+    el.textContent = hoje;
+  });
+
+  document.querySelectorAll(".data-reuniao").forEach(el => {
+    el.textContent = hoje;
+  });
+
+  document.querySelectorAll(".data-atividade").forEach(el => {
+    el.textContent = hoje;
+  });
+
+});
+</script>
+
+         
+
+     
+        
+
+
+          
+
+    </body>
+    
+
+</html>

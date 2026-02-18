@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Líder de Empresas</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet" 
+  >
+
+  <!-- CSS próprio -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header>
+  
+<nav class="navbar bg-body-tertiary fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Registro de Horas</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Ajustes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Meu Perfil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Notificações</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Menu
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Configurações</a></li>
+              <li><a class="dropdown-item" href="#">Suporte</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Sair</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex mt-3" role="search">
+          <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search"/>
+          
+          <button class="btn btn-pesquisar" type="submit">Pesquisar</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>
+
+  </header>
+
+  <!-- ===== CONTEÚDO ===== -->
+  <main class="container my-4">
+
+    <h1 class="mb-4">Notificações</h1>
+
+    <!-- ===== PENDÊNCIAS ===== -->
+    <section class="pendencias mb-5">
+      <h2>
+        ⚠️ Pendências
+        <span class="contador">2</span>
+      </h2>
+
+      <p class="pendencias-info">
+        Os colaboradores abaixo não registraram horas no período atual.
+      </p>
+
+      <ul class="pendencias-lista">
+        <li class="leve">
+          Maria Oliveira - Abaixo do mínimo esperado
+        </li>
+
+        <li class="grave">
+          Pedro Augusto - Nenhuma hora registrada
+          <span class="tempo">(há 3 dias)</span>
+          <button class="btn-notificar">Notificar</button>
+        </li>
+      </ul>
+    </section>
+
+
+    <!-- ===== COLABORADORES ===== -->
+    <section class="colaboradores mb-5">
+      <h2>
+        Colaboradores da Empresa
+        <span class="contador-colab">4</span>
+      </h2>
+
+       <form class="colab-filtros">
+    
+    <div class="filtro">
+      <label>De</label>
+      <input type="date">
+    </div>
+
+    <div class="filtro">
+      <label>Até</label>
+      <input type="date">
+    </div>
+
+    <div class="filtro">
+      <label>Projeto</label>
+      <select>
+        <option>Todos</option>
+        <option>Sistema Interno</option>
+        <option>Site</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn-filtrar">
+      Buscar
+    </button>
+
+  </form>
+
+      <div class="colaboradores-lista">
+
+      <div class="colab-linha">
+
+  <!-- Colaborador -->
+  <div class="colab-card">
+    <div class="colab-info">
+      <span class="nome">João Silva</span>
+      <span class="cargo">Desenvolvedor</span>
+    </div>
+  </div>
+
+  
+ 
+
+</div>
+
+
+
+        <!-- Colaborador -->
+        <div class="colab-linha">
+          <div class="colab-card">
+            <div class="colab-info">
+              <span class="nome">Maria Oliveira</span>
+              <span class="cargo">Analista</span>
+            </div>
+          </div>
+
+          <div class="colab-filtros">
+            <input type="date">
+            <select>
+              <option>Projeto</option>
+              <option>Sistema Interno</option>
+              <option>Site</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Colaborador -->
+        <div class="colab-linha">
+          <div class="colab-card">
+            <div class="colab-info">
+              <span class="nome">Carlos Souza</span>
+              <span class="cargo">Designer</span>
+            </div>
+          </div>
+
+          <div class="colab-filtros">
+            <input type="date">
+            <select>
+              <option>Projeto</option>
+              <option>Sistema Interno</option>
+              <option>Site</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Colaborador -->
+        <div class="colab-linha">
+          <div class="colab-card">
+            <div class="colab-info">
+              <span class="nome">Pedro Augusto</span>
+              <span class="cargo">Estagiário</span>
+            </div>
+          </div>
+
+          <div class="colab-filtros">
+            <input type="date">
+            <select>
+              <option>Projeto</option>
+              <option>Sistema Interno</option>
+              <option>Site</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== TABELA ===== -->
+    <section class="table-section">
+      <h2>Resumo de Horas</h2>
+
+      <table class="collab-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Total de Horas</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>João Silva</td>
+            <td>160h</td>
+            <td><span class="status ok">OK</span></td>
+          </tr>
+
+          <tr>
+            <td>Maria Oliveira</td>
+            <td>120h</td>
+            <td><span class="status pendente">Pendente</span></td>
+          </tr>
+
+          <tr>
+            <td>Carlos Souza</td>
+            <td>150h</td>
+            <td><span class="status ok">OK</span></td>
+          </tr>
+
+          <tr>
+            <td>Pedro Augusto</td>
+            <td>00h</td>
+            <td><span class="status grave">Grave</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

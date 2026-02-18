@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #0b5ed7;
+  height: 100vh;
+}
+
+/* HEADER */
+.dashboard-header {
+  height: 60px;
+  background: rgba(0,0,0,0.15);
+  color: #fff;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* BOARD */
+.board {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+  height: calc(100vh - 60px);
+  overflow-x: auto;
+}
+
+/* LISTA */
+.list {
+  background: #f4f5f7;
+  min-width: 280px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* TITULO */
+.list h2 {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #172b4d;
+}
+
+/* CARD */
+.card {
+  background: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+.card:hover {
+  background: #f0f0f0;
+}
+
+/* ADD */
+.add-card, .add-list {
+  font-size: 13px;
+  color: #5e6c84;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.add-list {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
