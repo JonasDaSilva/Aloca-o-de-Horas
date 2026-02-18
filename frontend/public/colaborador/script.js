@@ -25,34 +25,73 @@ function minutosParaHora(minutos) {
   return `${String(horas).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
 }
 
+// Jornada padrão: 8 horas por dia
+const JORNADA_PADRAO_MINUTOS = 8 * 60; // 480 minutos
+// Limite máximo de horas por dia: 12 horas
+const LIMITE_MAXIMO_HORAS_MINUTOS = 12 * 60; // 720 minutos
+// Limite máximo de horas entre entrada e saída: 24 horas
+const LIMITE_MAXIMO_24H_MINUTOS = 24 * 60; // 1440 minutos
+
+// ===== OBTER VALOR DO REGISTRO (span ou input) =====
+function obterValorRegistro(id) {
+  const el = document.getElementById(id);
+  if (!el) return '';
+  return el.value !== undefined ? el.value : el.textContent;
+}
+
 // ===== CALCULAR TOTAL DO DIA =====
 function calcularTotalDia() {
-  const entrada = document.getElementById('entrada');
-  const almocoSaida = document.getElementById('almocoSaida');
-  const almocoVolta = document.getElementById('almocoVolta');
-  const saida = document.getElementById('saida');
+  const entrada = obterValorRegistro('entrada');
+  const almocoSaida = obterValorRegistro('almocoSaida');
+  const almocoVolta = obterValorRegistro('almocoVolta');
+  const saida = obterValorRegistro('saida');
   const totalEl = document.querySelector('.total');
 
-  if (!entrada.value || !almocoSaida.value || !almocoVolta.value || !saida.value) {
-    totalEl.textContent = "00:00";
+  if (!entrada || !almocoSaida || !almocoVolta || !saida ||
+      entrada === '--:--' || almocoSaida === '--:--' || almocoVolta === '--:--' || saida === '--:--') {
+    if (totalEl) totalEl.textContent = "00:00";
     return;
   }
 
-  const minutosEntrada = paraMinutos(entrada.value);
-  const minutosSaida = paraMinutos(saida.value);
-  const minutosAlmocoSaida = paraMinutos(almocoSaida.value);
-  const minutosAlmocoVolta = paraMinutos(almocoVolta.value);
+  const minutosEntrada = paraMinutos(entrada);
+  const minutosSaida = paraMinutos(saida);
+  const minutosAlmocoSaida = paraMinutos(almocoSaida);
+  const minutosAlmocoVolta = paraMinutos(almocoVolta);
 
-  const totalMinutos = (minutosSaida - minutosEntrada) - (minutosAlmocoVolta - minutosAlmocoSaida);
+  // Verificar se a diferença entre entrada e saída ultrapassa 24 horas
+  let diferencaEntradaSaida = minutosSaida - minutosEntrada;
+  // Se a saída for menor que a entrada, significa que atravessou a meia-noite
+  if (diferencaEntradaSaida < 0) {
+    diferencaEntradaSaida = (24 * 60) + diferencaEntradaSaida; // Adiciona 24 horas
+  }
+  
+  if (diferencaEntradaSaida > LIMITE_MAXIMO_24H_MINUTOS) {
+    totalEl.textContent = "Erro";
+    totalEl.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+    totalEl.title = 'Erro: O registro não pode ultrapassar 24 horas entre entrada e saída';
+    return;
+  }
+
+  const totalMinutos = diferencaEntradaSaida - (minutosAlmocoVolta - minutosAlmocoSaida);
 
   if (totalMinutos < 0) {
     totalEl.textContent = "Erro";
     totalEl.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+    totalEl.title = 'Erro: Horários inválidos';
+    return;
+  }
+
+  // Verificar se o total excede 12 horas
+  if (totalMinutos > LIMITE_MAXIMO_HORAS_MINUTOS) {
+    totalEl.textContent = minutosParaHora(totalMinutos);
+    totalEl.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+    totalEl.title = `Erro: O total de horas (${minutosParaHora(totalMinutos)}) excede o limite máximo de 12 horas por dia`;
     return;
   }
 
   totalEl.textContent = minutosParaHora(totalMinutos);
   totalEl.style.background = 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
+  totalEl.title = '';
 }
 
 // ===== CARREGAR DADOS DO USUÁRIO =====
@@ -193,37 +232,203 @@ function atualizarSidebar() {
   }
 }
 
+// ===== VALIDAR REGISTRO DE HORA =====
+function validarRegistroHora(idCampo) {
+  const horaAtual = horaAgora();
+  const minutosAtual = paraMinutos(horaAtual);
+  
+  // Obter valores existentes dos outros campos
+  const entrada = obterValorRegistro('entrada');
+  const almocoSaida = obterValorRegistro('almocoSaida');
+  const almocoVolta = obterValorRegistro('almocoVolta');
+  const saida = obterValorRegistro('saida');
+  
+  // Validar ordem lógica dos horários
+  if (idCampo === 'almocoSaida' && entrada && entrada !== '--:--') {
+    const minutosEntrada = paraMinutos(entrada);
+    if (minutosAtual < minutosEntrada) {
+      alert('Erro: A saída para almoço não pode ser anterior à entrada!');
+      return false;
+    }
+  }
+  
+  if (idCampo === 'almocoVolta' && almocoSaida && almocoSaida !== '--:--') {
+    const minutosAlmocoSaida = paraMinutos(almocoSaida);
+    if (minutosAtual <= minutosAlmocoSaida) {
+      alert('Erro: O retorno do almoço deve ser posterior à saída para almoço!');
+      return false;
+    }
+  }
+  
+  if (idCampo === 'saida') {
+    if (!entrada || entrada === '--:--') {
+      alert('Erro: É necessário registrar a entrada antes da saída!');
+      return false;
+    }
+    
+    const minutosEntrada = paraMinutos(entrada);
+    let diferencaEntradaSaida = minutosAtual - minutosEntrada;
+    
+    // Se a saída for menor que a entrada, significa que atravessou a meia-noite
+    if (diferencaEntradaSaida < 0) {
+      diferencaEntradaSaida = (24 * 60) + diferencaEntradaSaida;
+    }
+    
+    // Verificar se ultrapassa 24 horas
+    if (diferencaEntradaSaida > LIMITE_MAXIMO_24H_MINUTOS) {
+      alert(`Erro: O registro não pode ultrapassar 24 horas entre entrada e saída!\nEntrada: ${entrada}\nTentativa de saída: ${horaAtual}`);
+      return false;
+    }
+    
+    // Se tiver almoço registrado, calcular o total
+    if (almocoSaida && almocoSaida !== '--:--' && almocoVolta && almocoVolta !== '--:--') {
+      const minutosAlmocoSaida = paraMinutos(almocoSaida);
+      const minutosAlmocoVolta = paraMinutos(almocoVolta);
+      const totalMinutos = diferencaEntradaSaida - (minutosAlmocoVolta - minutosAlmocoSaida);
+      
+      if (totalMinutos > LIMITE_MAXIMO_HORAS_MINUTOS) {
+        alert(`Erro: O total de horas (${minutosParaHora(totalMinutos)}) excede o limite máximo de 12 horas por dia!`);
+        return false;
+      }
+    }
+  }
+  
+  return true;
+}
+
+// ===== REGISTRAR HORA (atualiza span e dispara cálculo) =====
+function registrarHora(idCampo) {
+  // Validar antes de registrar
+  if (!validarRegistroHora(idCampo)) {
+    return;
+  }
+  
+  const el = document.getElementById(idCampo);
+  if (!el) return;
+  el.textContent = horaAgora();
+  calcularTotalDia();
+  atualizarSidebar();
+}
+
+// ===== VERIFICAR SE DIA ESTÁ ENCERRADO =====
+function isDiaEncerrado() {
+  const saida = obterValorRegistro('saida');
+  return saida && saida !== '--:--';
+}
+
+// ===== DESABILITAR TODOS OS BOTÕES DE REGISTRO =====
+function desabilitarBotoesRegistro() {
+  ['btnRegistrarEntrada', 'btnRegistrarSaidaAlmoco', 'btnRegistrarRetorno', 'btnDiaEncerrado'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.disabled = true;
+      btn.classList.add('disabled');
+    }
+  });
+}
+
 // ===== INICIALIZAR REGISTRO DE HORAS =====
 function inicializarRegistroHoras() {
-  const entrada = document.getElementById('entrada');
   const dataAtual = document.getElementById('dataAtual');
-  
-  // Definir hora de entrada automática
-  if (entrada) {
-    entrada.value = horaAgora();
-    entrada.disabled = true;
-  }
   
   // Mostrar data atual
   if (dataAtual) {
     dataAtual.textContent = dataHojeBR();
   }
   
-  // Adicionar listeners para calcular total
-  const campos = ['almocoSaida', 'almocoVolta', 'saida'];
-  campos.forEach(id => {
-    const campo = document.getElementById(id);
-    if (campo) {
-      campo.addEventListener('change', () => {
-        calcularTotalDia();
-        atualizarSidebar();
-      });
-      campo.addEventListener('input', () => {
-        calcularTotalDia();
-        atualizarSidebar();
-      });
-    }
-  });
+  // Botão Registrar Entrada
+  const btnEntrada = document.getElementById('btnRegistrarEntrada');
+  if (btnEntrada) {
+    btnEntrada.addEventListener('click', () => {
+      registrarHora('entrada');
+      btnEntrada.classList.add('registrado');
+    });
+  }
+  
+  // Botão Registrar Saída Almoço
+  const btnSaidaAlmoco = document.getElementById('btnRegistrarSaidaAlmoco');
+  if (btnSaidaAlmoco) {
+    btnSaidaAlmoco.addEventListener('click', () => {
+      registrarHora('almocoSaida');
+      btnSaidaAlmoco.classList.add('registrado');
+    });
+  }
+  
+  // Botão Retorno Registrado
+  const btnRetorno = document.getElementById('btnRegistrarRetorno');
+  if (btnRetorno) {
+    btnRetorno.addEventListener('click', () => {
+      registrarHora('almocoVolta');
+      btnRetorno.classList.add('registrado');
+    });
+  }
+  
+  // Botão Dia Encerrado (registra saída e desabilita tudo)
+  const btnDiaEncerrado = document.getElementById('btnDiaEncerrado');
+  if (btnDiaEncerrado) {
+    btnDiaEncerrado.addEventListener('click', () => {
+      // Verificar se todos os campos estão preenchidos
+      const entrada = obterValorRegistro('entrada');
+      const almocoSaida = obterValorRegistro('almocoSaida');
+      const almocoVolta = obterValorRegistro('almocoVolta');
+      
+      if (!entrada || entrada === '--:--') {
+        alert('Erro: É necessário registrar a entrada antes de encerrar o dia!');
+        return;
+      }
+      
+      // Se não tiver saída registrada, registrar agora
+      const saida = obterValorRegistro('saida');
+      if (!saida || saida === '--:--') {
+        // Validar antes de registrar
+        if (!validarRegistroHora('saida')) {
+          return;
+        }
+        registrarHora('saida');
+      }
+      
+      // Recalcular total após registrar saída
+      calcularTotalDia();
+      
+      const total = document.querySelector('.total');
+      const totalStr = total ? total.textContent : '00:00';
+      
+      // Verificar se há erro no cálculo
+      if (totalStr === 'Erro') {
+        alert('Erro: Não é possível encerrar o dia com horários inválidos. Verifique os registros.');
+        return;
+      }
+      
+      if (totalStr !== '00:00') {
+        const totalMinutos = paraMinutos(totalStr);
+        
+        // Verificar se excede 12 horas
+        if (totalMinutos > LIMITE_MAXIMO_HORAS_MINUTOS) {
+          alert(`Erro: Não é possível encerrar o dia!\n\nO total de horas (${totalStr}) excede o limite máximo de 12 horas por dia.`);
+          return;
+        }
+        
+        const diferencaMinutos = totalMinutos - JORNADA_PADRAO_MINUTOS;
+        
+        // > 8h = hora extra (positivo), < 8h = horas negativas (negativo)
+        adicionarAoBancoHoras(diferencaMinutos);
+        atualizarBancoHoras();
+        desabilitarBotoesRegistro();
+        
+        let msgBanco = '';
+        if (diferencaMinutos > 0) {
+          const extras = minutosParaHora(diferencaMinutos);
+          msgBanco = `\n\nHora extra contabilizada: +${extras}`;
+        } else if (diferencaMinutos < 0) {
+          const faltando = minutosParaHora(Math.abs(diferencaMinutos));
+          msgBanco = `\n\nHoras negativas contabilizadas: -${faltando}`;
+        }
+        alert(`Dia encerrado com sucesso!\n\nTotal de horas: ${totalStr}${msgBanco}`);
+      } else {
+        alert('Erro: Não é possível encerrar o dia sem horas registradas.');
+      }
+    });
+  }
   
   // Inicializar datas nos projetos e atividades
   const hoje = dataHojeBR();
@@ -291,51 +496,10 @@ function inicializarSair() {
   }
 }
 
-// ===== FECHAR DIA =====
+// ===== FECHAR DIA (legado - mantido para compatibilidade, lógica movida para btnDiaEncerrado) =====
 function inicializarFecharDia() {
-  const btnFecharDia = document.querySelector('.fechar-dia');
-  
-  if (btnFecharDia) {
-    btnFecharDia.addEventListener('click', () => {
-      const entrada = document.getElementById('entrada').value;
-      const almocoSaida = document.getElementById('almocoSaida').value;
-      const almocoVolta = document.getElementById('almocoVolta').value;
-      const saida = document.getElementById('saida').value;
-      const total = document.querySelector('.total').textContent;
-      
-      if (!almocoSaida || !almocoVolta || !saida) {
-        alert('Por favor, preencha todos os campos de horário antes de fechar o dia.');
-        return;
-      }
-      
-      if (total === 'Erro' || total === '00:00') {
-        alert('Por favor, verifique os horários inseridos. O total calculado está inválido.');
-        return;
-      }
-      
-      // Aqui você pode fazer uma requisição ao backend para salvar os dados
-      const dadosDia = {
-        data: dataHojeBR(),
-        entrada: entrada,
-        almocoSaida: almocoSaida,
-        almocoVolta: almocoVolta,
-        saida: saida,
-        total: total
-      };
-      
-      console.log('Fechando dia com os seguintes dados:', dadosDia);
-      
-      // Simular salvamento (aqui você faria a requisição ao backend)
-      alert(`Dia fechado com sucesso!\n\nTotal de horas: ${total}`);
-      
-      // Desabilitar campos após fechar
-      document.getElementById('almocoSaida').disabled = true;
-      document.getElementById('almocoVolta').disabled = true;
-      document.getElementById('saida').disabled = true;
-      btnFecharDia.disabled = true;
-      btnFecharDia.textContent = 'Dia Fechado';
-    });
-  }
+  // O botão "Dia Encerrado" já cuida de registrar a saída e encerrar o dia
+  // Esta função é mantida vazia para não quebrar chamadas existentes
 }
 
 // ===== CARREGAR HISTÓRICO =====
@@ -356,96 +520,91 @@ function carregarHistorico() {
 }
 
 // ===== BANCO DE HORAS =====
-function inicializarBancoHoras() {
-  // Aqui você faria uma requisição ao backend para buscar o banco de horas
-  // Por enquanto, usando dados de exemplo
-  // Em produção, isso viria do backend calculando as horas trabalhadas vs horas esperadas
-  
+// Regra: > 8h/dia = hora extra (positivo), < 8h/dia = horas negativas (negativo)
+function obterChaveBancoHoras() {
+  const usuarioSalvo = localStorage.getItem('usuarioLogado');
+  if (usuarioSalvo) {
+    try {
+      const usuario = JSON.parse(usuarioSalvo);
+      return `bancoHoras_${usuario.id || 'default'}`;
+    } catch (e) {}
+  }
+  return 'bancoHoras_default';
+}
+
+function obterBancoHorasMinutos() {
+  const key = obterChaveBancoHoras();
+  const salvo = localStorage.getItem(key);
+  return salvo ? parseInt(salvo, 10) : 0;
+}
+
+function adicionarAoBancoHoras(minutos) {
+  const key = obterChaveBancoHoras();
+  const atual = obterBancoHorasMinutos();
+  localStorage.setItem(key, String(atual + minutos));
+}
+
+function atualizarBancoHoras() {
+  const totalBancoMinutos = obterBancoHorasMinutos();
+  const valorHoras = (Math.abs(totalBancoMinutos) / 60).toFixed(1).replace('.', ',');
+  const totalFormatado = totalBancoMinutos >= 0 ? `+${valorHoras}h` : `-${valorHoras}h`;
+
   const bancoTotalHoras = document.getElementById('bancoTotalHoras');
   const bancoTotalHoras2 = document.getElementById('bancoTotalHoras2');
-  const bancoStatus = document.getElementById('bancoStatus');
-  const bancoStatus2 = document.getElementById('bancoStatus2');
   const bancoStatusBadge = document.getElementById('bancoStatusBadge');
   const bancoStatusBadge2 = document.getElementById('bancoStatusBadge2');
   const bancoDetalhes = document.getElementById('bancoDetalhes');
   const bancoDetalhes2 = document.getElementById('bancoDetalhes2');
   const bancoCards = document.querySelectorAll('.banco-horas-card');
-  
-  // Exemplo de dados (em produção, viria do backend)
-  const horasTrabalhadas = 160; // Total de horas trabalhadas no mês
-  const horasEsperadas = 160; // Total de horas esperadas (ex: 8h/dia * 20 dias)
-  const totalBanco = horasTrabalhadas - horasEsperadas;
-  
-  // Atualizar valores
-  const totalFormatado = totalBanco >= 0 ? `+${totalBanco}h` : `${totalBanco}h`;
-  
+
   if (bancoTotalHoras) bancoTotalHoras.textContent = totalFormatado;
   if (bancoTotalHoras2) bancoTotalHoras2.textContent = totalFormatado;
-  
-  // Determinar status
+
   let status = 'em-dia';
   let statusTexto = 'Em dia';
   let statusCor = 'bg-secondary';
   let detalhes = '';
-  
-  if (totalBanco < -10) {
-    // Está devendo mais de 10 horas
+
+  if (totalBancoMinutos < -600) {
     status = 'devendo';
-    statusTexto = 'Devendo horas';
+    statusTexto = 'Horas negativas';
     statusCor = 'bg-danger';
-    detalhes = `Você está devendo ${Math.abs(totalBanco)} horas. Considere compensar horas extras.`;
-  } else if (totalBanco < 0) {
-    // Está devendo menos de 10 horas
+    detalhes = `Você está com ${totalFormatado} (abaixo de 8h/dia em dias anteriores).`;
+  } else if (totalBancoMinutos < 0) {
     status = 'devendo';
-    statusTexto = 'Devendo horas';
+    statusTexto = 'Horas negativas';
     statusCor = 'bg-warning';
-    detalhes = `Você está devendo ${Math.abs(totalBanco)} horas.`;
-  } else if (totalBanco > 40) {
-    // Tem muitas horas acumuladas (mais de 40h)
+    detalhes = `Você está com ${totalFormatado}. Trabalhou menos de 8h em alguns dias.`;
+  } else if (totalBancoMinutos > 2400) {
     status = 'excesso';
-    statusTexto = 'Muitas horas acumuladas';
+    statusTexto = 'Hora extra';
     statusCor = 'bg-warning';
-    detalhes = `Você tem ${totalBanco} horas acumuladas. Considere usar suas horas de banco.`;
-  } else if (totalBanco > 0) {
-    // Tem horas acumuladas mas dentro do normal
-    status = 'em-dia';
-    statusTexto = 'Horas acumuladas';
+    detalhes = `Você tem ${totalFormatado} de banco (trabalhou mais de 8h/dia).`;
+  } else if (totalBancoMinutos > 0) {
+    status = 'excesso';
+    statusTexto = 'Hora extra';
     statusCor = 'bg-success';
-    detalhes = `Você tem ${totalBanco} horas acumuladas no banco.`;
+    detalhes = `Você tem ${totalFormatado} de banco (horas extras acumuladas).`;
   } else {
-    // Está em dia
     status = 'em-dia';
     statusTexto = 'Em dia';
     statusCor = 'bg-success';
-    detalhes = 'Suas horas estão equilibradas.';
+    detalhes = 'Suas horas estão equilibradas (8h/dia).';
   }
-  
-  // Atualizar badges
-  if (bancoStatusBadge) {
-    bancoStatusBadge.textContent = statusTexto;
-    bancoStatusBadge.className = `badge ${statusCor}`;
-  }
-  if (bancoStatusBadge2) {
-    bancoStatusBadge2.textContent = statusTexto;
-    bancoStatusBadge2.className = `badge ${statusCor}`;
-  }
-  
-  // Atualizar detalhes
+
+  if (bancoStatusBadge) { bancoStatusBadge.textContent = statusTexto; bancoStatusBadge.className = `badge ${statusCor}`; }
+  if (bancoStatusBadge2) { bancoStatusBadge2.textContent = statusTexto; bancoStatusBadge2.className = `badge ${statusCor}`; }
   if (bancoDetalhes) bancoDetalhes.innerHTML = `<small class="text-muted">${detalhes}</small>`;
   if (bancoDetalhes2) bancoDetalhes2.innerHTML = `<small class="text-muted">${detalhes}</small>`;
-  
-  // Atualizar classes dos cards
+
   bancoCards.forEach(card => {
     card.className = 'ativ-card atividade banco-horas-card';
     card.classList.add(`status-${status}`);
   });
-  
-  console.log('Banco de horas inicializado:', {
-    horasTrabalhadas,
-    horasEsperadas,
-    totalBanco,
-    status
-  });
+}
+
+function inicializarBancoHoras() {
+  atualizarBancoHoras();
 }
 
 // ===== NOTIFICAÇÕES =====

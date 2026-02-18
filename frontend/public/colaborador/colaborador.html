@@ -139,7 +139,7 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered text-center">
+              <table class="table table-bordered text-center registro-horas-table">
                 <thead class="table-dark">
                   <tr>
                     <th><i class="fas fa-sign-in-alt me-2"></i>Entrada</th>
@@ -150,34 +150,42 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <input type="time" class="form-control entrada" id="entrada" disabled>
-                    </td>
-                    <td>
-                      <input type="time" class="form-control almoco-saida" id="almocoSaida">
-                    </td>
-                    <td>
-                      <input type="time" class="form-control almoco-volta" id="almocoVolta">
-                    </td>
-                    <td>
-                      <input type="time" class="form-control saida" id="saida">
-                    </td>
+                  <tr class="registro-valores">
+                    <td><span class="registro-hora" id="entrada">--:--</span></td>
+                    <td><span class="registro-hora" id="almocoSaida">--:--</span></td>
+                    <td><span class="registro-hora" id="almocoVolta">--:--</span></td>
+                    <td><span class="registro-hora" id="saida">--:--</span></td>
                     <td class="total-cell">
                       <span class="total badge text-white fs-6" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">00:00</span>
                     </td>
+                  </tr>
+                  <tr class="registro-botoes">
+                    <td>
+                      <button type="button" class="btn btn-registro btn-entrada" id="btnRegistrarEntrada" title="Registrar horário de entrada">
+                        <i class="fas fa-sign-in-alt me-2"></i>Registrar Entrada
+                      </button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-registro btn-almoco-saida" id="btnRegistrarSaidaAlmoco" title="Registrar saída para almoço">
+                        <i class="fas fa-utensils me-2"></i>Registrar Saída Almoço
+                      </button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-registro btn-almoco-retorno" id="btnRegistrarRetorno" title="Registrar retorno do almoço">
+                        <i class="fas fa-utensils me-2"></i>Retorno Registrado
+                      </button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-registro btn-saida" id="btnDiaEncerrado" title="Registrar saída e encerrar o dia">
+                        <i class="fas fa-check-circle me-2"></i>Dia Encerrado
+                      </button>
+                    </td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
-
-        <div class="d-flex justify-content-end mb-4">
-          <button type="button" class="btn btn-lg fechar-dia" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none;">
-            <i class="fas fa-check-circle me-2"></i>
-            Fechar Dia
-          </button>
         </div>
 
         <!-- Seção: Projetos na tela inicial -->
@@ -650,7 +658,7 @@
                   </h2>
                   <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                      Na tela inicial de Registro de Horas, preencha os campos de entrada, saída para almoço, retorno do almoço e saída final. O sistema calculará automaticamente o total de horas do dia.
+                      Na tela inicial de Registro de Horas, utilize os botões para registrar: Entrada, Saída para almoço, Retorno do almoço e Dia Encerrado. Cada clique registra o horário atual e o sistema calcula automaticamente o total de horas do dia.
                     </div>
                   </div>
                 </div>

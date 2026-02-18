@@ -313,6 +313,68 @@ body {
   min-width: 200px;
 }
 
+/* ===== REGISTRO DE HORAS - BOTÕES E VALORES ===== */
+.registro-horas-table .registro-hora {
+  display: inline-block;
+  min-width: 60px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c3e50;
+  padding: 0.5rem;
+}
+
+.registro-horas-table .registro-valores td {
+  vertical-align: middle;
+  padding: 1rem;
+}
+
+.registro-botoes td {
+  padding: 0.75rem;
+  vertical-align: middle;
+}
+
+.btn-registro {
+  width: 100%;
+  white-space: nowrap;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.btn-registro:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-registro:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-entrada {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+}
+
+.btn-almoco-saida {
+  background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+}
+
+.btn-almoco-retorno {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+}
+
+.btn-saida {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.btn-registro.registrado {
+  opacity: 0.85;
+}
+
 /* ===== PROFILE CARD ===== */
 .profile-card {
   background: white;

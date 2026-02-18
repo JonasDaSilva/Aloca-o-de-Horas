@@ -1122,18 +1122,19 @@ async function carregarProjetos() {
       const dataInicio = projeto.data_inicio 
         ? new Date(projeto.data_inicio).toLocaleDateString('pt-BR')
         : 'Não definida';
+      const nomeProjetoEscapado = (projeto.nome || 'Sem nome').replace(/'/g, "\\'");
       
       return `
         <div class="project-card" data-projeto-id="${projeto.id}">
-          <div class="d-flex justify-content-between align-items-start mb-2">
-            <h3 class="mb-0">
+          <div class="project-card-header">
+            <h3 class="project-card-title">
               <span class="editable-title projeto-nome" contenteditable="true" data-field="nome" data-projeto-id="${projeto.id}">${projeto.nome || 'Sem nome'}</span>
             </h3>
             <div class="project-actions">
-              <button class="btn btn-sm btn-outline-warning me-1" onclick="editarProjeto(${projeto.id})" title="Editar Projeto">
+              <button class="btn btn-sm btn-outline-warning" onclick="editarProjeto(${projeto.id})" title="Editar Projeto">
                 <i class="fas fa-edit"></i>
               </button>
-              <button class="btn btn-sm btn-outline-info me-1" onclick="verColaboradoresProjeto(${projeto.id}, '${projeto.nome}')" title="Ver Colaboradores">
+              <button class="btn btn-sm btn-outline-info" onclick="verColaboradoresProjeto(${projeto.id}, '${nomeProjetoEscapado}')" title="Ver Colaboradores">
                 <i class="fas fa-users"></i>
               </button>
               <button class="btn btn-sm btn-outline-danger" onclick="excluirProjeto(${projeto.id})" title="Excluir">
@@ -1141,18 +1142,20 @@ async function carregarProjetos() {
               </button>
             </div>
           </div>
-          <p>
-            <strong>Código:</strong>
-            <span class="editable-text projeto-codigo" contenteditable="true" data-field="codigo" data-projeto-id="${projeto.id}">${projeto.codigo || 'Não definido'}</span>
-          </p>
-          <p>
-            <strong>Início:</strong>
-            <span class="data-projeto badge bg-secondary projeto-data" data-field="data_inicio" data-projeto-id="${projeto.id}">${dataInicio}</span>
-          </p>
-          <p>
-            <strong>Colaboradores:</strong>
-            <span class="badge bg-success">${projeto.numColaboradores || 0}</span>
-          </p>
+          <div class="project-card-body">
+            <p class="project-card-info">
+              <i class="fas fa-hashtag me-1"></i><strong>Código:</strong>
+              <span class="editable-text projeto-codigo" contenteditable="true" data-field="codigo" data-projeto-id="${projeto.id}">${projeto.codigo || 'Não definido'}</span>
+            </p>
+            <p class="project-card-info">
+              <i class="fas fa-calendar-alt me-1"></i><strong>Início:</strong>
+              <span class="data-projeto badge bg-secondary projeto-data" data-field="data_inicio" data-projeto-id="${projeto.id}">${dataInicio}</span>
+            </p>
+            <p class="project-card-info">
+              <i class="fas fa-users me-1"></i><strong>Colaboradores:</strong>
+              <span class="badge bg-success">${projeto.numColaboradores || 0}</span>
+            </p>
+          </div>
         </div>
       `;
     }).join('');
